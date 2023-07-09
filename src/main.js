@@ -6,6 +6,7 @@ import vuetify from './core/plugins/vuetify';
 import httpClient from './core/plugins/http-client';
 
 import '@/core/assets/styles/index.scss';
+import '@/core/plugins/vee-validate';
 
 Vue.config.productionTip = false;
 Vue.prototype.httpClient = httpClient;

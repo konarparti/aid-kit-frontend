@@ -4,14 +4,14 @@
       <router-view />
     </AppLayout>
     <AppPreloader />
-    <!-- <AppAlert /> -->
+    <AppAlert />
   </v-app>
 </template>
 
 <script>
 import AppLayout from '@/core/ui/layouts/AppLayout.vue';
 import AppPreloader from '@/modules/preloader/ui/components/AppPreloader.vue';
-// import AppAlert from '@/modules/alert/ui/components/AppAlert.vue';
+import AppAlert from '@/modules/alert/ui/components/AppAlert.vue';
 
 export default {
   name: 'App',
@@ -19,7 +19,7 @@ export default {
   components: {
     AppLayout,
     AppPreloader,
-    // AppAlert,
+    AppAlert,
   },
 };
 </script>

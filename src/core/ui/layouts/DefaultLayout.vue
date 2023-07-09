@@ -25,7 +25,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn tile depressed small class="white--text" color="main-color"> Выйти </v-btn>
+      <v-btn tile depressed small class="white--text" color="main-color" @click="logout"> Выйти </v-btn>
     </v-app-bar>
 
     <v-main>
@@ -37,6 +37,9 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 import DrawerNavigation from '@/core/ui/components/DrawerNavigation.vue';
+import { Logout } from '@/modules/auth/repositories/auth-repository';
+
+import ALERT_TYPES from '@/modules/alert/constants/alert-types';
 
 export default {
   name: 'DefaultLayout',
@@ -51,7 +54,7 @@ export default {
         {
           title: 'Главная',
           icon: 'mdi-account-supervisor',
-          link: '/',
+          link: '/home',
         },
         {
           title: 'О проекте',
@@ -86,6 +89,22 @@ export default {
 
   methods: {
     ...mapMutations(['TOGGLE_MENU', 'SET_STATUS']),
+    ...mapMutations('alert', ['ADD_ALERT']),
+    ...mapMutations('auth', ['REMOVE_AUTH_DATA']),
+
+    async logout() {
+      try {
+        await Logout();
+
+        this.REMOVE_AUTH_DATA();
+
+        this.ADD_ALERT({ type: ALERT_TYPES.SUCCESS, text: 'Успешный выход' });
+
+        this.$router.push({ name: 'login' });
+      } catch (error) {
+        this.ADD_ALERT({ type: ALERT_TYPES.ERROR, text: error.message });
+      }
+    },
   },
 };
 </script>
