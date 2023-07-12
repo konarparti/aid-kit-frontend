@@ -7,6 +7,13 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: '/',
+    name: 'main',
+    redirect: {
+      name: 'home',
+    },
+  },
+  {
     path: '/home',
     name: 'home',
     component: () => import(/* webpackChunkName: "home" */ '@/modules/home/ui/views/HomeView.vue'),

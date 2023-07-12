@@ -11,7 +11,7 @@ $grid-breakpoints: (
 
 // Обнуление border-radius
 /* stylelint-disable-next-line length-zero-no-unit */
-$border-radius-root: 0px;
+// $border-radius-root: 0px;
 
 $material-light: (
   'background': #f6f9fe,
@@ -27,7 +27,7 @@ $info-color: #0089fa;
 $background-color: #25547a;
 $success-color: #008c36;
 $warning-color: #fabf0f;
-$error-color: #841515;
+$error-color: #c72b2b;
 $color-gray-1: #221f1f;
 $color-gray-2: #403f41;
 $color-gray-3: #57585a;

@@ -23,7 +23,7 @@ const vuetify = new Vuetify({
       },
       light: {
         // Цветовая палитра
-        'error-color': '#841515',
+        'error-color': '#c72b2b',
         'main-color': '#004C8B',
         'second-color': '#4BACFB',
         'info-color': '#0089FA',
