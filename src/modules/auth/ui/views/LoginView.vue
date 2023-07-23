@@ -15,7 +15,7 @@
                 <v-col cols="12">
                   <ValidationProvider v-slot="{ errors }" rules="required">
                     <v-text-field
-                      v-model="controlsAuth.email"
+                      v-model="controls.login"
                       :error-messages="errors"
                       outlined
                       color="main-color"
@@ -26,7 +26,7 @@
                 <v-col cols="12">
                   <ValidationProvider v-slot="{ errors }" rules="required">
                     <v-text-field
-                      v-model="controlsAuth.password"
+                      v-model="controls.password"
                       :error-messages="errors"
                       outlined
                       color="main-color"
@@ -67,7 +67,7 @@
 import { mapMutations } from 'vuex';
 
 import ALERT_TYPES from '@/modules/alert/constants/alert-types';
-import { Login, Register } from '../../repositories/auth-repository';
+import { Login } from '../../repositories/auth-repository';
 
 export default {
   name: 'LoginView',
@@ -77,19 +77,10 @@ export default {
       tab: null,
       items: ['auth', 'register'],
       showPassword: false,
-      showPasswordReg: false,
-      showPasswordRegAgain: false,
 
-      controlsAuth: {
-        email: null,
+      controls: {
+        login: null,
         password: null,
-      },
-
-      controlsReg: {
-        fullName: null,
-        email: null,
-        password: null,
-        passwordAgain: null,
       },
     };
   },
@@ -103,27 +94,7 @@ export default {
       try {
         this.ADD_LOADER();
 
-        const user = await Login({ login: this.controlsAuth.email, password: this.controlsAuth.password });
-
-        this.SET_AUTH_DATA(user);
-
-        this.$router.push({ name: 'home' });
-      } catch (error) {
-        this.ADD_ALERT({ type: ALERT_TYPES.ERROR, text: error.message });
-      } finally {
-        this.REMOVE_LOADER();
-      }
-    },
-
-    async onSubmitRegister() {
-      try {
-        this.ADD_LOADER();
-
-        const user = await Register({
-          fullName: this.controlsReg.fullName,
-          login: this.controlsReg.email,
-          password: this.controlsReg.password,
-        });
+        const user = await Login({ login: this.controls.login, password: this.controls.password });
 
         this.SET_AUTH_DATA(user);
 

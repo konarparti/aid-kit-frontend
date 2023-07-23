@@ -15,7 +15,7 @@
                 <v-col cols="12">
                   <ValidationProvider v-slot="{ errors }" rules="required">
                     <v-text-field
-                      v-model="controlsReg.fullName"
+                      v-model="controls.fullName"
                       :error-messages="errors"
                       outlined
                       color="main-color"
@@ -26,7 +26,7 @@
                 <v-col cols="12">
                   <ValidationProvider v-slot="{ errors }" rules="required">
                     <v-text-field
-                      v-model="controlsReg.email"
+                      v-model="controls.login"
                       :error-messages="errors"
                       outlined
                       color="main-color"
@@ -36,31 +36,43 @@
                 </v-col>
 
                 <v-col cols="12">
-                  <ValidationProvider v-slot="{ errors }" rules="required" vid="password">
+                  <ValidationProvider v-slot="{ errors }" rules="required">
                     <v-text-field
-                      v-model="controlsReg.password"
+                      v-model="controls.email"
                       :error-messages="errors"
                       outlined
                       color="main-color"
-                      :type="showPasswordReg ? 'text' : 'password'"
-                      :append-icon="showPasswordReg ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+                      label="Email"
+                      autocomplete="new-password" />
+                  </ValidationProvider>
+                </v-col>
+
+                <v-col cols="12">
+                  <ValidationProvider v-slot="{ errors }" rules="required" vid="password">
+                    <v-text-field
+                      v-model="controls.password"
+                      :error-messages="errors"
+                      outlined
+                      color="main-color"
+                      :type="showPassword ? 'text' : 'password'"
+                      :append-icon="showPassword ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
                       label="Пароль"
                       autocomplete="new-password"
-                      @click:append="() => (showPasswordReg = !showPasswordReg)" />
+                      @click:append="() => (showPassword = !showPassword)" />
                   </ValidationProvider>
                 </v-col>
 
                 <v-col cols="12">
                   <ValidationProvider v-slot="{ errors }" rules="required|confirmed:password">
                     <v-text-field
-                      v-model="controlsReg.passwordAgain"
+                      v-model="controls.passwordAgain"
                       :error-messages="errors"
                       outlined
                       color="main-color"
-                      :type="showPasswordRegAgain ? 'text' : 'password'"
-                      :append-icon="showPasswordRegAgain ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+                      :type="showPasswordAgain ? 'text' : 'password'"
+                      :append-icon="showPasswordAgain ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
                       label="Подтверждение пароля"
-                      @click:append="() => (showPasswordRegAgain = !showPasswordRegAgain)" />
+                      @click:append="() => (showPasswordAgain = !showPasswordAgain)" />
                   </ValidationProvider>
                 </v-col>
               </v-row>
@@ -91,21 +103,55 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
+import ALERT_TYPES from '@/modules/alert/constants/alert-types';
+import { Register } from '../../repositories/register-repository';
+
 export default {
   name: 'RegisterView',
 
   data() {
     return {
-      showPasswordReg: false,
-      showPasswordRegAgain: false,
+      showPassword: false,
+      showPasswordAgain: false,
 
-      controlsReg: {
+      controls: {
         fullName: null,
-        email: null,
+        login: null,
         password: null,
         passwordAgain: null,
+        email: null,
       },
     };
+  },
+
+  methods: {
+    ...mapMutations('alert', ['ADD_ALERT']),
+    ...mapMutations('preloader', ['ADD_LOADER', 'REMOVE_LOADER']),
+    ...mapMutations('auth', ['SET_AUTH_DATA']),
+
+    async onSubmitRegister() {
+      try {
+        this.ADD_LOADER();
+
+        const user = await Register({
+          fullName: this.controls.fullName,
+          login: this.controls.login,
+          password: this.controls.password,
+          email: this.controls.email,
+        });
+
+        this.SET_AUTH_DATA(user);
+
+        this.ADD_ALERT({ type: ALERT_TYPES.SUCCESS, text: 'Успешная регистрация' });
+        this.$router.push({ name: 'login' });
+      } catch (error) {
+        this.ADD_ALERT({ type: ALERT_TYPES.ERROR, text: error.message });
+      } finally {
+        this.REMOVE_LOADER();
+      }
+    },
   },
 };
 </script>
