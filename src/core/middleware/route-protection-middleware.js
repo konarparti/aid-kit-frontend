@@ -16,7 +16,6 @@ export default async function checkProtection(to, from, next) {
       return next();
     } catch (error) {
       store.commit('alert/ADD_ALERT', { type: ALERT_TYPES.ERROR, text: error.message });
-
       return next({
         name: 'login',
       });

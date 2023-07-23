@@ -29,6 +29,14 @@ const routes = [
       layout: 'EmptyLayout',
     },
   },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import(/* webpackChunkName: "login" */ '@/modules/register/ui/views/RegisterView.vue'),
+    meta: {
+      layout: 'EmptyLayout',
+    },
+  },
 ];
 
 const router = new VueRouter({
@@ -40,7 +48,6 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   await loadLayout(to);
 
-  next();
   if (to.meta.isProtected) {
     await checkProtection(to, from, next);
   } else {
