@@ -24,10 +24,10 @@ const vuetify = new Vuetify({
       light: {
         // Цветовая палитра
         'error-color': '#c72b2b',
-        'main-color': '#004C8B',
-        'second-color': '#4BACFB',
-        'info-color': '#0089FA',
-        'background-color': '#25547A',
+        'main-color': '#3E6950',
+        'second-color': '#DFFBEB',
+        'info-color': '#75C797',
+        'background-color': '#6D7A73',
         'success-color': '#008C36',
         'warning-color': '#FABF0F',
         'color-gray-1': '#221f1f',

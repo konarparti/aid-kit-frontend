@@ -9,7 +9,7 @@
         </v-row>
         <v-row>
           <v-col cols="12">
-            <v-btn small tile depressed color="main-color" class="white--text mr-2" @click="showCreateForm = true">
+            <v-btn small tile depressed color="main-color" class="white--text mr-2" @click="showCreateModal = true">
               Добавить
               <v-icon right dark> mdi-plus </v-icon>
             </v-btn>
@@ -49,10 +49,10 @@
                         <v-icon>{{ medicine.available ? checkIcon : uncheckIcon }}</v-icon>
                       </td>
                       <td>
-                        <v-btn v-ripple="false" title="Изменить" plain small icon @click="clickUpdateForm(form)">
+                        <v-btn v-ripple="false" title="Изменить" plain small icon @click="clickUpdateModal(medicine)">
                           <v-icon>mdi-18px mdi-pencil</v-icon>
                         </v-btn>
-                        <v-btn v-ripple="false" title="Удалить" plain small icon @click="clickDeleteForm(form)">
+                        <v-btn v-ripple="false" title="Удалить" plain small icon @click="clickDeleteModal(medicine)">
                           <v-icon>mdi-18px mdi-delete</v-icon>
                         </v-btn>
                       </td>
@@ -65,6 +65,10 @@
         </v-row>
       </v-col>
     </v-row>
+
+    <SidebarModal v-model="showCreateModal" title="Добавить лекарство"> </SidebarModal>
+    <SidebarModal v-model="showUpdateModal" title="Изменить лекарство"> </SidebarModal>
+    <CenterModal :is-open="showDeleteModal" title="Удалить лекарство" @close="showDeleteModal = false"> </CenterModal>
   </v-container>
 </template>
 
@@ -79,6 +83,10 @@ export default {
 
   data() {
     return {
+      showCreateModal: false,
+      showUpdateModal: false,
+      showDeleteModal: false,
+
       checkIcon: 'mdi-24px mdi-check',
       uncheckIcon: 'mdi-24px mdi-close',
 
@@ -110,6 +118,14 @@ export default {
       const expired = new Date(date);
       if (expired < now) return 'red--text';
       return 'green--text';
+    },
+
+    clickUpdateModal(medicine) {
+      this.showUpdateModal = true;
+    },
+
+    clickDeleteModal(medicine) {
+      this.showDeleteModal = true;
     },
   },
 };
